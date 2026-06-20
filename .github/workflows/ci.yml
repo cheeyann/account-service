@@ -55,6 +55,9 @@ jobs:
       - name: Deploy to iximiuz
         run: |
           kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/postgres/deployment.yaml
+          kubectl apply -f k8s/postgres/service.yaml
+          kubectl rollout status deployment/postgres -n account-app
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
           kubectl rollout status deployment/account-service -n account-app
