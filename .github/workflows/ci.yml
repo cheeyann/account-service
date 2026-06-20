@@ -46,3 +46,15 @@ jobs:
         with:
           push: true
           tags: cheeyan/account-service:latest
+
+      - name: Set up kubeconfig for iximiuz
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.IXIMIUZ_KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Deploy to iximiuz
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+          kubectl rollout status deployment/account-service -n account-app
